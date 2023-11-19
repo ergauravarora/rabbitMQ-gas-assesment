@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="RabbitMQ_DBModelStoreContainer" CdmEntityContainer="RabbitMQ_DBEntities">
+    <EntitySetMapping Name="tblSensors">
+      <EntityTypeMapping TypeName="RabbitMQ_DBModel.tblSensor">
+        <MappingFragment StoreEntitySet="tblSensor">
+          <ScalarProperty Name="SensorID" ColumnName="SensorID" />
+          <ScalarProperty Name="DateTimeOffset" ColumnName="DateTimeOffset" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Element" ColumnName="Element" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Unit" ColumnName="Unit" />
+          <ScalarProperty Name="Minimum" ColumnName="Minimum" />
+          <ScalarProperty Name="Maximum" ColumnName="Maximum" />
+          <ScalarProperty Name="Fermenter" ColumnName="Fermenter" />
+          <ScalarProperty Name="Actor" ColumnName="Actor" />
+          <ScalarProperty Name="License" ColumnName="License" />
+          <ScalarProperty Name="Serial" ColumnName="Serial" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

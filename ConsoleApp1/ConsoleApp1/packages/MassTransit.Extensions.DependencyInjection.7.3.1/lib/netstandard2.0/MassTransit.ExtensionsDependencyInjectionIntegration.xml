@@ -1,0 +1,285 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MassTransit.ExtensionsDependencyInjectionIntegration</name>
+    </assembly>
+    <members>
+        <member name="T:MassTransit.ExtensionsDependencyInjectionIntegration.Bind`2">
+            <summary>
+            Bind is used to store types bound to their owner, such as an IBusControl to an IMyBus.
+            </summary>
+            <typeparam name="TKey">The key type</typeparam>
+            <typeparam name="TValue">The bound type</typeparam>
+        </member>
+        <member name="M:MassTransit.DependencyInjectionExtensions.UseServiceScope(GreenPipes.IPipeConfigurator{MassTransit.ConsumeContext},System.IServiceProvider)">
+            <summary>
+            Creates a scope which is used by all downstream filters/consumers/etc.
+            </summary>
+            <param name="configurator"></param>
+            <param name="serviceProvider"></param>
+        </member>
+        <member name="M:MassTransit.DependencyInjectionExtensions.UseMessageScope(MassTransit.IConsumePipeConfigurator,System.IServiceProvider)">
+            <summary>
+            Creates a service scope for each message type, compatible with UseMessageRetry and UseInMemoryOutbox
+            </summary>
+            <param name="configurator"></param>
+            <param name="serviceProvider"></param>
+        </member>
+        <member name="M:MassTransit.DependencyInjectionExtensions.RegisterInMemorySagaRepository``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Register the InMemory saga repository for the specified saga type
+            </summary>
+            <param name="collection"></param>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:MassTransit.DependencyInjectionExtensions.CreateRequestClient``1(System.IServiceProvider,MassTransit.RequestTimeout)">
+            <summary>
+            Create a request client, using the specified service address, using the <see cref="T:MassTransit.IClientFactory" /> from the container.
+            </summary>
+            <param name="provider"></param>
+            <param name="timeout">The default timeout for requests</param>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:MassTransit.DependencyInjectionExtensions.CreateRequestClient``1(System.IServiceProvider,System.Uri,MassTransit.RequestTimeout)">
+            <summary>
+            Create a request client, using the specified service address, using the <see cref="T:MassTransit.IClientFactory" /> from the container.
+            </summary>
+            <param name="provider"></param>
+            <param name="destinationAddress">The destination service address</param>
+            <param name="timeout">The default timeout for requests</param>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:MassTransit.DependencyInjectionExtensions.AddGenericRequestClient(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Registers a generic request client provider in the container, which will be used for any
+            client that is not explicitly registered using AddRequestClient.
+            </summary>
+            <param name="collection"></param>
+        </member>
+        <member name="M:MassTransit.DependencyInjectionFilterExtensions.UseConsumeFilter(MassTransit.IConsumePipeConfigurator,System.Type,MassTransit.Registration.IConfigurationServiceProvider)">
+            <summary>
+            Use scoped filter for <see cref="T:MassTransit.ConsumeContext`1" />
+            </summary>
+            <param name="configurator"></param>
+            <param name="filterType">Filter type</param>
+            <param name="provider">Configuration service provider</param>
+        </member>
+        <member name="M:MassTransit.DependencyInjectionFilterExtensions.UseSendFilter(MassTransit.ISendPipelineConfigurator,System.Type,MassTransit.Registration.IConfigurationServiceProvider)">
+            <summary>
+            Use scoped filter for <see cref="T:MassTransit.SendContext`1" />
+            </summary>
+            <param name="configurator"></param>
+            <param name="filterType">Filter type</param>
+            <param name="provider">Configuration service provider</param>
+        </member>
+        <member name="M:MassTransit.DependencyInjectionFilterExtensions.UsePublishFilter(MassTransit.IPublishPipelineConfigurator,System.Type,MassTransit.Registration.IConfigurationServiceProvider)">
+            <summary>
+            Use scoped filter for <see cref="T:MassTransit.PublishContext`1" />
+            </summary>
+            <param name="configurator"></param>
+            <param name="filterType">Filter type</param>
+            <param name="provider">Configuration service provider</param>
+        </member>
+        <member name="M:MassTransit.DependencyInjectionFilterExtensions.UseExecuteActivityFilter(MassTransit.IConsumePipeConfigurator,System.Type,MassTransit.Registration.IConfigurationServiceProvider)">
+            <summary>
+            Use scoped filter for <see cref="T:MassTransit.Courier.ExecuteContext`1" />
+            </summary>
+            <param name="configurator"></param>
+            <param name="filterType">Filter type</param>
+            <param name="provider">Configuration service provider</param>
+        </member>
+        <member name="M:MassTransit.DependencyInjectionFilterExtensions.UseCompensateActivityFilter(MassTransit.IConsumePipeConfigurator,System.Type,MassTransit.Registration.IConfigurationServiceProvider)">
+            <summary>
+            Use scoped filter for <see cref="T:MassTransit.Courier.CompensateContext`1" />
+            </summary>
+            <param name="configurator"></param>
+            <param name="filterType">Filter type</param>
+            <param name="provider">Configuration service provider</param>
+        </member>
+        <member name="M:MassTransit.DependencyInjectionReceiveEndpointExtensions.Consumer``1(MassTransit.IReceiveEndpointConfigurator,System.IServiceProvider,System.Action{MassTransit.ConsumeConfigurators.IConsumerConfigurator{``0}})">
+            <summary>
+            Registers a consumer given the lifetime scope specified
+            </summary>
+            <typeparam name="T">The consumer type</typeparam>
+            <param name="configurator">The service bus configurator</param>
+            <param name="provider">The LifetimeScope of the provider</param>
+            <param name="configure"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MassTransit.DependencyInjectionReceiveEndpointExtensions.Consumer``2(MassTransit.ConsumeConfigurators.IBatchConfigurator{``1},System.IServiceProvider,System.Action{MassTransit.ConsumeConfigurators.IConsumerMessageConfigurator{``0,MassTransit.Batch{``1}}})">
+            <summary>
+            Connect a consumer with a consumer factory method
+            </summary>
+            <typeparam name="TConsumer"></typeparam>
+            <typeparam name="TMessage"></typeparam>
+            <param name="configurator"></param>
+            <param name="provider"></param>
+            <param name="configure"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MassTransit.DependencyInjectionReceiveEndpointExtensions.ConnectConsumer``1(MassTransit.Pipeline.IConsumePipeConnector,System.IServiceProvider,GreenPipes.IPipeSpecification{MassTransit.ConsumerConsumeContext{``0}}[])">
+            <summary>
+            Connect a consumer to the bus/mediator
+            </summary>
+            <typeparam name="TConsumer"></typeparam>
+            <param name="connector"></param>
+            <param name="provider"></param>
+            <param name="pipeSpecifications"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MassTransit.DependencyInjectionReceiveEndpointExtensions.Saga``1(MassTransit.IReceiveEndpointConfigurator,System.IServiceProvider,System.Action{MassTransit.ISagaConfigurator{``0}})">
+            <summary>
+            Registers a saga using the container that has the repository resolved from the container
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="configurator"></param>
+            <param name="provider"></param>
+            <param name="configure"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MassTransit.DependencyInjectionReceiveEndpointExtensions.StateMachineSaga``1(MassTransit.IReceiveEndpointConfigurator,Automatonymous.SagaStateMachine{``0},System.IServiceProvider,System.Action{MassTransit.ISagaConfigurator{``0}})">
+            <summary>
+            Subscribe a state machine saga to the endpoint
+            </summary>
+            <typeparam name="TInstance">The state machine instance type</typeparam>
+            <param name="configurator"></param>
+            <param name="stateMachine"></param>
+            <param name="serviceProvider">The Container reference to resolve the repository</param>
+            <param name="configure">Optionally configure the saga</param>
+            <returns></returns>
+        </member>
+        <member name="M:MassTransit.DependencyInjectionReceiveEndpointExtensions.StateMachineSaga``1(MassTransit.IReceiveEndpointConfigurator,System.IServiceProvider,System.Action{MassTransit.ISagaConfigurator{``0}})">
+            <summary>
+            Subscribe a state machine saga to the endpoint
+            </summary>
+            <typeparam name="TInstance">The state machine instance type</typeparam>
+            <param name="configurator"></param>
+            <param name="provider">The Container reference to resolve the repository</param>
+            <param name="configure">Optionally configure the saga</param>
+            <returns></returns>
+        </member>
+        <member name="T:MassTransit.DependencyInjectionRegistrationExtensions">
+            <summary>
+            Standard registration extensions, which are used to configure consumers, sagas, and activities on receive endpoints from a
+            dependency injection container.
+            </summary>
+        </member>
+        <member name="M:MassTransit.DependencyInjectionRegistrationExtensions.AddMassTransit(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{MassTransit.ExtensionsDependencyInjectionIntegration.IServiceCollectionBusConfigurator})">
+            <summary>
+            Adds MassTransit and its dependencies to the <paramref name="collection" />, and allows consumers, sagas, and activities to be configured
+            </summary>
+            <param name="collection"></param>
+            <param name="configure"></param>
+        </member>
+        <member name="M:MassTransit.DependencyInjectionRegistrationExtensions.AddMediator(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{MassTransit.ExtensionsDependencyInjectionIntegration.IServiceCollectionMediatorConfigurator})">
+            <summary>
+            Adds the MassTransit Mediator to the <paramref name="collection" />, and allows consumers, sagas, and activities (which are not supported
+            by the Mediator) to be configured.
+            </summary>
+            <param name="collection"></param>
+            <param name="configure"></param>
+        </member>
+        <member name="M:MassTransit.DependencyInjectionStateMachineSagaRegistrationExtensions.RegisterSagaStateMachine(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Type)">
+            <summary>
+            Add the state machine sagas in the specified assembly to the service collection
+            </summary>
+            <param name="collection"></param>
+            <param name="type">The state machine saga type</param>
+        </member>
+        <member name="M:MassTransit.DependencyInjectionStateMachineSagaRegistrationExtensions.RegisterSagaStateMachine``2(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Add the state machine sagas in the specified assembly to the service collection
+            </summary>
+            <param name="collection"></param>
+        </member>
+        <member name="M:MassTransit.DependencyInjectionStateMachineSagaRegistrationExtensions.RegisterSagaStateMachines(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Reflection.Assembly[])">
+            <summary>
+            Add the state machine sagas in the specified assembly to the service collection
+            </summary>
+            <param name="collection"></param>
+            <param name="assemblies">If specified, only the specified assemblies are scanned</param>
+        </member>
+        <member name="M:MassTransit.DependencyInjectionStateMachineSagaRegistrationExtensions.RegisterSagaStateMachines(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Type[])">
+            <summary>
+            Add the state machine sagas by type
+            </summary>
+            <param name="collection"></param>
+            <param name="types">If specified, only the specified assemblies are scanned</param>
+        </member>
+        <member name="M:MassTransit.Testing.DependencyInjectionTestingExtensions.AddMassTransitInMemoryTestHarness(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{MassTransit.ExtensionsDependencyInjectionIntegration.IServiceCollectionBusConfigurator})">
+            <summary>
+            Add the In-Memory test harness to the container, and configure it using the callback specified.
+            </summary>
+        </member>
+        <member name="M:MassTransit.Testing.DependencyInjectionTestingExtensions.AddConsumerTestHarness``1(MassTransit.ExtensionsDependencyInjectionIntegration.IServiceCollectionBusConfigurator)">
+            <summary>
+            Add a consumer test harness for the specified consumer to the container
+            </summary>
+        </member>
+        <member name="M:MassTransit.Testing.DependencyInjectionTestingExtensions.AddSagaTestHarness``1(MassTransit.ExtensionsDependencyInjectionIntegration.IServiceCollectionBusConfigurator)">
+            <summary>
+            Add a saga test harness for the specified saga to the container. The saga must be added separately, including
+            a valid saga repository.
+            </summary>
+        </member>
+        <member name="M:MassTransit.Testing.DependencyInjectionTestingExtensions.AddSagaStateMachineTestHarness``2(MassTransit.ExtensionsDependencyInjectionIntegration.IServiceCollectionBusConfigurator)">
+            <summary>
+            Add a saga test harness for the specified saga to the container. The saga must be added separately, including
+            a valid saga repository.
+            </summary>
+        </member>
+        <member name="M:MassTransit.Transactions.DependencyInjectionTransactionExtensions.AddTransactionalEnlistmentBus(MassTransit.ExtensionsDependencyInjectionIntegration.IServiceCollectionBusConfigurator)">
+            <summary>
+            Adds <see cref="T:MassTransit.Transactions.ITransactionalBus"/> to the container with singleton lifetime, which can be used instead of <see cref="T:MassTransit.IBus"/> to enlist
+            published/sent messages in the current transaction. It isn't truly transactional, but delays the messages until
+            the transaction being to commit. This has a very limited purpose and is not meant for general use.
+            </summary>
+        </member>
+        <member name="M:MassTransit.Transactions.DependencyInjectionTransactionExtensions.AddTransactionalBus(MassTransit.ExtensionsDependencyInjectionIntegration.IServiceCollectionBusConfigurator)">
+            <summary>
+            Adds <see cref="T:MassTransit.Transactions.ITransactionalBus"/> to the container with scoped lifetime, which can be used to release the messages to the bus
+            immediately after a transaction commit. This has a very limited purpose and is not meant for general use.
+            It is recommended this is scoped within a unit of work (e.g. Http Request)
+            </summary>
+        </member>
+        <member name="T:MassTransit.MultiBus.DependencyInjectionMultiBusRegistrationExtensions">
+            <summary>
+            Support for multiple bus instances in a single container. This is an advanced concept. Review the documentation
+            for details on the constraints and known limitations of this approach.
+            </summary>
+        </member>
+        <member name="M:MassTransit.MultiBus.DependencyInjectionMultiBusRegistrationExtensions.AddMassTransit``2(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{MassTransit.ExtensionsDependencyInjectionIntegration.MultiBus.IServiceCollectionBusConfigurator{``0}})">
+            <summary>
+            Configure a MassTransit bus instance, using the specified <typeparamref name="TBus" /> bus type, which must inherit directly from <see cref="T:MassTransit.IBus" />.
+            A type that implements <typeparamref name="TBus" /> is required, specified by the <typeparamref name="TBusInstance" /> parameter.
+            </summary>
+            <param name="collection">The service collection</param>
+            <param name="configure">Bus instance configuration method</param>
+        </member>
+        <member name="M:MassTransit.MultiBus.DependencyInjectionMultiBusRegistrationExtensions.AddMassTransit``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{MassTransit.ExtensionsDependencyInjectionIntegration.MultiBus.IServiceCollectionBusConfigurator{``0}})">
+            <summary>
+            Configure a MassTransit bus instance, using the specified <typeparamref name="TBus" /> bus type, which must inherit directly from <see cref="T:MassTransit.IBus" />.
+            A dynamic type will be created to support the bus instance, which will be initialized when the <typeparamref name="TBus" /> type is retrieved
+            from the container.
+            </summary>
+            <param name="collection">The service collection</param>
+            <param name="configure">Bus instance configuration method</param>
+        </member>
+        <member name="M:MassTransit.MultiBus.Transactions.DependencyInjectionTransactionExtensions.AddTransactionalEnlistmentBus``1(MassTransit.ExtensionsDependencyInjectionIntegration.MultiBus.IServiceCollectionBusConfigurator{``0})">
+            <summary>
+            Adds <see cref="T:MassTransit.Transactions.ITransactionalBus"/> to the container with singleton lifetime, which can be used instead of <see cref="T:MassTransit.IBus"/> to enlist
+            published/sent messages in the current transaction. It isn't truly transactional, but delays the messages until
+            the transaction being to commit. This has a very limited purpose and is not meant for general use.
+            </summary>
+        </member>
+        <member name="M:MassTransit.MultiBus.Transactions.DependencyInjectionTransactionExtensions.AddTransactionalBus``1(MassTransit.ExtensionsDependencyInjectionIntegration.MultiBus.IServiceCollectionBusConfigurator{``0})">
+            <summary>
+            Adds <see cref="T:MassTransit.Transactions.ITransactionalBus"/> to the container with scoped lifetime, which can be used to release the messages to the bus
+            immediately after a transaction commit. This has a very limited purpose and is not meant for general use.
+            It is recommended this is scoped within a unit of work (e.g. Http Request)
+            </summary>
+        </member>
+    </members>
+</doc>
