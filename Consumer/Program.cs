@@ -41,6 +41,7 @@ public interface ISensor
 
 public interface ISensorRepository
 {
+    SensorValue GetSensorData(string SensorName, string ElementName);
     bool TryGetSensor(string sensorName, out ISensor sensor);
     IEnumerable<ISensor> GetSensorList(string fermenter = "");
     bool TryGetValue(ISensor sensor, string element, out SensorValue value);
@@ -162,6 +163,41 @@ public class SensorEventConsumer : IConsumer<SensorEvent>
         // Additional processing logic can be added here.
     }
 }
+    public interface GetSensorDataRequest
+    {
+        string SensorName { get; }
+        string ElementName { get; }
+    }
+
+   public interface GetSensorDataResponse
+{
+    object SensorData { get; }
+}
+
+
+
+    public class GetSensorDataConsumer : IConsumer<GetSensorDataRequest>
+    {
+        private readonly ISensorRepository repository;
+
+        public GetSensorDataConsumer(ISensorRepository repository)
+        {
+            this.repository = repository;
+        }
+
+        public async Task Consume(ConsumeContext<GetSensorDataRequest> context)
+        {
+            var request = context.Message;
+
+            // Get sensor data from the repository
+            var sensorData = repository.GetSensorData(request.SensorName, request.ElementName);
+
+            // Respond to the request
+            await context.RespondAsync<GetSensorDataResponse>(new { SensorData = sensorData });
+        }
+    }
+
+
 
     class Program
     {
@@ -177,6 +213,7 @@ public class SensorEventConsumer : IConsumer<SensorEvent>
                 cfg.ReceiveEndpoint("sensor_queue", e =>
                 {
                     e.Consumer<SensorEventConsumer>(() => new SensorEventConsumer(repository));
+                    e.Consumer<GetSensorDataConsumer>(() => new GetSensorDataConsumer(repository));
                 });
             });
 
