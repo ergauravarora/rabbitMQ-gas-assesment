@@ -78,14 +78,14 @@ public class SensorRepository : ISensorRepository
 {
     private readonly List<ISensor> sensors;
     private readonly List<SensorValue> sensorValues;
-        private readonly RabbitMQ_DBEntities dbContext;
-        RabbitMQ_DBEntities db = new RabbitMQ_DBEntities();
+        //private readonly RabbitMQ_DBEntities dbContext;
+        //RabbitMQ_DBEntities db = new RabbitMQ_DBEntities();
 
         public SensorRepository()
     {
         sensors = new List<ISensor>();
         sensorValues = new List<SensorValue>();
-        this.dbContext = new RabbitMQ_DBEntities();
+        ///this.dbContext = new RabbitMQ_DBEntities();
         }
 
     public void AddSensor(ISensor sensor)
@@ -114,8 +114,8 @@ public class SensorRepository : ISensorRepository
             model.Unit = value.Unit;
             model.Unit = value.Unit;
             model.DateTimeOffset = value.MeasurementTime;
-            dbContext.tblSensors.Add(model);
-            dbContext.SaveChanges();
+            //dbContext.tblSensors.Add(model);
+            //dbContext.SaveChanges();
             //dbContext.SensorValues.Add(value);
             //dbContext.SaveChanges();
         }
@@ -138,8 +138,12 @@ public class SensorRepository : ISensorRepository
         value = sensorValues.FindLast(sv => sv.Name == sensor.Name && sv.Element == element);
         return value != null;
     }
-  
-}
+
+        public SensorValue GetSensorData(string SensorName, string ElementName)
+        {
+            return new SensorValue();
+        }
+    }
 
 public class SensorEvent
 {

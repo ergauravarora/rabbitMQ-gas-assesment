@@ -36,7 +36,72 @@ public class SensorEvent
     public SensorValue SensorValue { get; set; }
 }
 
+    public interface GetSensorDataRequest
+    {
+        object SensorName { get; }
+        object ElementName { get; }
+    }
 
+    public interface GetSensorDataResponse
+    {
+        SensorValue SensorData { get; }
+    }
+
+
+    //class Program
+    //{
+    //    static async Task Main()
+    //    {
+    //        var busControl = Bus.Factory.CreateUsingRabbitMq(cfg =>
+    //        {
+    //            cfg.Host(new Uri("rabbitmq://localhost"), h => { });
+    //        });
+
+    //        await busControl.StartAsync();
+
+    //        Console.WriteLine("Simulator app started...");
+
+    //        while (true)
+    //        {
+    //            Console.WriteLine("Enter sensor name:");
+    //            var name = Console.ReadLine();
+
+    //            Console.WriteLine("Enter sensor element:");
+    //            var element = Console.ReadLine();
+
+    //            Console.WriteLine("Enter sensor value:");
+    //            if (double.TryParse(Console.ReadLine(), out var value))
+    //            {
+    //                var sensorValue = new SensorValue
+    //                {
+    //                    MeasurementTime = DateTimeOffset.Now,
+    //                    Name = name,
+    //                    Element = element,
+    //                    Value = value,
+    //                    Status = "OK",
+    //                    Unit = "unit",
+    //                    Minimum = 0,
+    //                    Maximum = 100,
+    //                    Fermenter = "unused",
+    //                    Actor = false,
+    //                    License = false,
+    //                    Serial = Guid.NewGuid().ToString()
+    //                };
+
+    //                await busControl.Publish(new SensorEvent { SensorValue = sensorValue });
+
+    //                Console.WriteLine($"Published: {sensorValue.Name} {sensorValue.Element} {sensorValue.Value}");
+    //            }
+    //            else
+    //            {
+    //                Console.WriteLine("Invalid value. Please enter a valid numeric value.");
+    //            }
+
+    //            // Sleep for ~5 seconds
+    //            await Task.Delay(5000);
+    //        }
+    //    }
+    //}
 
     class Program
     {
@@ -47,49 +112,30 @@ public class SensorEvent
                 cfg.Host(new Uri("rabbitmq://localhost"), h => { });
             });
 
-            await busControl.StartAsync();
+            var busHandle = await busControl.StartAsync();
 
             Console.WriteLine("Simulator app started...");
 
             while (true)
             {
                 Console.WriteLine("Enter sensor name:");
-                var name = Console.ReadLine();
+                var sensorName = Console.ReadLine();
 
                 Console.WriteLine("Enter sensor element:");
-                var element = Console.ReadLine();
+                var elementName = Console.ReadLine();
 
-                Console.WriteLine("Enter sensor value:");
-                if (double.TryParse(Console.ReadLine(), out var value))
-                {
-                    var sensorValue = new SensorValue
-                    {
-                        MeasurementTime = DateTimeOffset.Now,
-                        Name = name,
-                        Element = element,
-                        Value = value,
-                        Status = "OK",
-                        Unit = "unit",
-                        Minimum = 0,
-                        Maximum = 100,
-                        Fermenter = "unused",
-                        Actor = false,
-                        License = false,
-                        Serial = Guid.NewGuid().ToString()
-                    };
+                // Send a request to get sensor data
+                var requestClient = busControl.CreateRequestClient<GetSensorDataRequest>(new Uri("rabbitmq://localhost/sensor_queue"));
 
-                    await busControl.Publish(new SensorEvent { SensorValue = sensorValue });
+                var response = await busControl.Request<GetSensorDataRequest, GetSensorDataResponse>(new { SensorName = sensorName, ElementName = elementName });
 
-                    Console.WriteLine($"Published: {sensorValue.Name} {sensorValue.Element} {sensorValue.Value}");
-                }
-                else
-                {
-                    Console.WriteLine("Invalid value. Please enter a valid numeric value.");
-                }
+                Console.WriteLine($"Received Sensor Data: {response.Message.SensorData}");
 
                 // Sleep for ~5 seconds
                 await Task.Delay(5000);
             }
+
+            await busHandle.StopAsync();
         }
     }
 
